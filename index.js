@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
 });
 
 
+
 async function run() {
   try {
     await client.connect();
@@ -26,7 +27,21 @@ async function run() {
     const propertiesCollection = propsDB.collection("OwnerPropertiesData")
     const userBookingCollection = propsDB.collection("UserBookingsData")
 
+    const usersRoleDB = client.db('PropRentClient')
+    const usersCollection = usersRoleDB.collection("user")
 
+    app.get('/getUsers', async(req, res) => {
+      const result = await usersCollection.find().toArray()
+      res.json(result)
+    })
+    
+    app.patch('/updateUserRole/:id', async(req, res) => {
+      const {id} = req.params
+      const filter = { _id: new ObjectId(id) }
+      const updateDoc = { $set: req.body }
+      const result = await usersCollection.updateOne(filter, updateDoc)
+      res.json(result)
+    })
 
     app.post('/addBookings', async (req, res) => {
       const data = req.body;
