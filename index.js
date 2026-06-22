@@ -25,9 +25,20 @@ async function run() {
 
     const propsDB = client.db('PropRentServer')
     const propertiesCollection = propsDB.collection("OwnerPropertiesData")
+    const userBookingCollection = propsDB.collection("UserBookingsData")
 
 
 
+    app.post('/addBookings', async (req, res) => {
+      const data = req.body;
+      const result = await userBookingCollection.insertOne(data)
+      res.json(result)
+    })
+
+    app.get('/addBookings', async (req, res) => {
+      const result = await userBookingCollection.find().toArray()
+      res.json(result)
+    })
 
     app.post('/addProperties', async(req, res) => {
         const data = req.body
