@@ -46,7 +46,7 @@ async function run() {
       res.json(result)
     })
 
-    app.get('/getPropertiesData', async(req, res) => {
+    app.get('/getPropertiesData ', async(req, res) => {
         const result = await propertiesCollection.find().toArray()
       res.json(result)
     })
